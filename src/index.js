@@ -66,7 +66,6 @@ function generateHTML(newURL, pageTitle, faviconUrl) {
     <title>${pageTitle}</title>
     <link rel="icon" href="${finalFavicon}">
     <meta property="og:title" content="${pageTitle}">
-    <meta property="og:description" content="Redirecting to ${newURL}">
     <noscript><meta http-equiv="refresh" content="1;url=${newURL}"></noscript>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap');
@@ -172,7 +171,7 @@ function generateHTML(newURL, pageTitle, faviconUrl) {
                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
 
-      setTimeout(() => { window.location.replace("${newURL}"); }, 800);
+      window.location.replace("${newURL}");
     </script>
   </body>
   </html>`;
