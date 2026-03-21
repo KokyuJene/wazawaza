@@ -52,6 +52,9 @@ function generateHTML(newURL) {
   <head>
     <meta charset="UTF-8">
     <title>Loading...</title>
+    <link rel="shortcut icon" href="https://super-hiko14.com/favicon.ico">
+    <link rel="shortcut icon" type="image/webp" href="https://super-hiko14.com/favicon.ico">
+    <link rel="apple-touch-icon" sizes="32x32" href="https://super-hiko14.com/favicon.ico">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap');
       body { background: #080808; color: #d0d0d0; font-family: 'Jost', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
