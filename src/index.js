@@ -1,10 +1,10 @@
 /**
- * メインドメイン & サブドメイン両対応版
+ * メインドメイン & サブドメイン両対応版 (判定強化)
  */
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const hostname = url.hostname;
+    const hostname = url.hostname.toLowerCase();
     
     const CONFIG = {
       oldDomain: "hiko14.cc",
@@ -23,13 +23,16 @@ export default {
       }
     };
 
-    const parts = hostname.split('.');
     let destination = "";
     let title = "Loading...";
 
-    // サブドメインの判定
-    if (parts.length > 2) {
-      const sub = parts[0].toLowerCase();
+    if (hostname === CONFIG.oldDomain) {
+      // メインドメインの場合
+      destination = `https://${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
+    } else {
+      // サブドメインがある場合
+      const sub = hostname.split('.')[0];
+      
       if (CONFIG.exceptions[sub]) {
         destination = CONFIG.exceptions[sub];
         title = `Loading to ${sub.toUpperCase()}...`;
@@ -38,21 +41,20 @@ export default {
         destination = `https://${mappedSub}.${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
         title = `Loading to ${mappedSub}...`;
       }
-    } else {
-      // メインドメインの場合
-      destination = `https://${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
     }
 
-    // ここで CONFIG.faviconUrl を渡しています
+    try {
+      destination = new URL(destination).toString();
+    } catch (e) {
+    }
+
     return new Response(generateHTML(destination, title, CONFIG.faviconUrl), {
       headers: { "content-type": "text/html;charset=UTF-8" },
     });
   }
 };
 
-// 引数に faviconUrl を追加しました
 function generateHTML(newURL, pageTitle, faviconUrl) {
-  // 直接指定でもOKですが、一応引数を使う形にします
   const finalFavicon = faviconUrl || "https://super-hiko14.com/favicon.png";
 
   return `
