@@ -1,0 +1,6 @@
+name = "hiko14-redirect"
+main = "src/index.js"
+compatibility_date = "2024-03-21"
+
+[site]
+bucket = "./public"
