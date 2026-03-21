@@ -9,13 +9,14 @@ export default {
     const CONFIG = {
       oldDomain: "hiko14.cc",
       newDomain: "super-hiko14.com",
-      faviconUrl: "https://super-hiko14.com/favicon.png", 
+      faviconUrl: "https://super-hiko14.com/favicon.ico", 
       exceptions: {
         "yt": "https://youtube.com/@super-hiko14",
         "kjyt": "https://youtube.com/@KokyuJene",
         "msk": "https://misskey.io/@KokyuJene",
-        "ofs": "https://ofuse.io/@superhiko14",
-        "mc": "https://launch.minecraft.net/profile/Super%20Hiko14"
+        "ofs": "https://ofuse.me/@superhiko14",
+        "mc": "https://launch.minecraft.net/profile/Super%20Hiko14",
+        "diary": "https://super-hiko14.me/diary"
       },
       subdomainMapping: {
         "kj": "kokyujene",
@@ -27,10 +28,8 @@ export default {
     let title = "Loading...";
 
     if (hostname === CONFIG.oldDomain) {
-      // メインドメインの場合
       destination = `https://${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
     } else {
-      // サブドメインがある場合
       const sub = hostname.split('.')[0];
       
       if (CONFIG.exceptions[sub]) {
@@ -55,7 +54,7 @@ export default {
 };
 
 function generateHTML(newURL, pageTitle, faviconUrl) {
-  const finalFavicon = faviconUrl || "https://super-hiko14.com/favicon.png";
+  const finalFavicon = faviconUrl || "https://super-hiko14.com/favicon.ico";
 
   return `
   <!DOCTYPE html>
