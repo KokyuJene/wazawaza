@@ -14,7 +14,7 @@ export default {
         "yt": "https://youtube.com/@super-hiko14",
         "kjyt": "https://youtube.com/@KokyuJene",
         "msk": "https://misskey.io/@KokyuJene",
-        "ofs": "https://ofuse.me/@superhiko14",
+        "ofs": "https://ofuse.me/superhiko14",
         "mc": "https://launch.minecraft.net/profile/Super%20Hiko14",
         "diary": "https://super-hiko14.me/diary"
       },
