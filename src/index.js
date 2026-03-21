@@ -1,3 +1,6 @@
+/**
+ * メインドメイン & サブドメイン両対応版
+ */
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -40,14 +43,17 @@ export default {
       destination = `https://${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
     }
 
+    // ここで CONFIG.faviconUrl を渡しています
     return new Response(generateHTML(destination, title, CONFIG.faviconUrl), {
       headers: { "content-type": "text/html;charset=UTF-8" },
     });
   }
 };
 
-function generateHTML(newURL, pageTitle) {
-  const finalFavicon = "https://super-hiko14.com/favicon.png";
+// 引数に faviconUrl を追加しました
+function generateHTML(newURL, pageTitle, faviconUrl) {
+  // 直接指定でもOKですが、一応引数を使う形にします
+  const finalFavicon = faviconUrl || "https://super-hiko14.com/favicon.png";
 
   return `
   <!DOCTYPE html>
@@ -58,7 +64,7 @@ function generateHTML(newURL, pageTitle) {
     <title>${pageTitle}</title>
     <link rel="icon" href="${finalFavicon}">
     <meta property="og:title" content="${pageTitle}">
-    <meta property="og:description" content="Loading to ${newURL}">
+    <meta property="og:description" content="Redirecting to ${newURL}">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap');
       body { background: #080808; color: #d0d0d0; font-family: 'Jost', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
