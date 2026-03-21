@@ -67,23 +67,113 @@ function generateHTML(newURL, pageTitle, faviconUrl) {
     <link rel="icon" href="${finalFavicon}">
     <meta property="og:title" content="${pageTitle}">
     <meta property="og:description" content="Redirecting to ${newURL}">
+    <noscript><meta http-equiv="refresh" content="1;url=${newURL}"></noscript>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap');
-      body { background: #080808; color: #d0d0d0; font-family: 'Jost', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
-      .wrap { display: flex; flex-direction: column; align-items: center; gap: 24px; }
-      .bar { width: 120px; height: 1px; background: #1e1e1e; position: relative; overflow: hidden; }
-      .fill { position: absolute; width: 60%; height: 100%; background: linear-gradient(90deg, #275766, #baffc0); animation: s 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-      @keyframes s { 0% { left: -60%; } 100% { left: 110%; } }
-      .text { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #383838; animation: p 1.4s ease-in-out infinite; }
-      @keyframes p { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        background-color: #fff;
+        color: #000;
+        font-family: 'Jost', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      html[data-theme="dark"] body {
+        background-color: #080808;
+        color: #d0d0d0;
+      }
+
+      /* ── ローディング本体 ── */
+      .loading-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        to { opacity: 1; }
+      }
+
+      /* バー */
+      .loading-bar-track {
+        width: 120px;
+        height: 1px;
+        background-color: #e8e8e8;
+        position: relative;
+        overflow: hidden;
+      }
+
+      html[data-theme="dark"] .loading-bar-track {
+        background-color: #1e1e1e;
+      }
+
+      .loading-bar-fill {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg, #275766, #baffc0);
+        animation: slide 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes slide {
+        0%   { left: -60%; }
+        100% { left: 110%; }
+      }
+
+      /* テキスト */
+      .loading-text {
+        font-size: 0.72rem;
+        font-weight: 400;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #ccc;
+        animation: pulse 1.4s ease-in-out infinite;
+      }
+
+      html[data-theme="dark"] .loading-text {
+        color: #383838;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.4; }
+      }
     </style>
-    <script>setTimeout(() => { window.location.replace("${newURL}"); }, 800);</script>
   </head>
   <body>
-    <div class="wrap">
-      <div class="bar"><div class="fill"></div></div>
-      <div class="text">Loading</div>
+    <div class="loading-wrap">
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill"></div>
+      </div>
+      <span class="loading-text">Loading</span>
     </div>
+
+    <script>
+      const theme = localStorage.getItem('theme') || 
+                    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+      setTimeout(() => { window.location.replace("${newURL}"); }, 800);
+    </script>
   </body>
   </html>`;
 }
