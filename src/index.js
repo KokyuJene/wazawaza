@@ -21,6 +21,29 @@ export default {
       subdomainMapping: {
         "kj": "kokyujene",
         "dc": "discord"
+      },
+      goMappings: {
+        "kj/m": "https://kokyujene.super-hiko14.com/members",
+        "kj/r": "https://kokyujene.super-hiko14.com/rules",
+        "kj/n": "https://kokyujene.super-hiko14.com/news",
+        "l": "https://legal.super-hiko14.com",
+        "tos": "https://legal.super-hiko14.com/terms",
+        "pp": "https://legal.super-hiko14.com/privacypolicy",
+        "l/a": "https://legal.super-hiko14.com/#auth",
+        "a/tos": "https://legal.super-hiko14.com/auth/terms",
+        "a/pp": "https://legal.super-hiko14.com/auth/privacypolicy",
+        "ts": "https://tsumiki.app",
+        "tl": "https://tools.super-hiko14.com",
+        "ab": "https://about.super-hiko14.com",
+        "at": "https://about.super-hiko14.com",
+        "dy": "https://super-hiko14.me/diary",
+        "ct": "https://super-hiko14.com/contact",
+        "help": "https://super-hiko14.com/contact",
+        "hp": "https://super-hiko14.com/contact",
+        "sp": "https://super-hiko14.com/contact",
+        "a": "https://about.super-hiko14.com",
+        "d": "https://super-hiko14.me/diary",
+        "c": "https://super-hiko14.com/contact"
       }
     };
 
@@ -31,7 +54,17 @@ export default {
     } else {
       const sub = hostname.split('.')[0];
       
-      if (CONFIG.exceptions[sub]) {
+      if (sub === "go") {
+        // パスをクリーニング（先頭と末尾のスラッシュを削除）
+        const pathKey = url.pathname.replace(/^\/|\/$/g, '');
+        
+        if (CONFIG.goMappings[pathKey]) {
+          destination = `https://${CONFIG.goMappings[pathKey]}${url.search}${url.hash}`;
+        } else {
+          // マッチしない場合はメインドメインへ
+          destination = `https://${CONFIG.newDomain}`;
+        }
+      } else if (CONFIG.exceptions[sub]) {
         destination = CONFIG.exceptions[sub];
       } else {
         const mappedSub = CONFIG.subdomainMapping[sub] || sub;
