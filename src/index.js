@@ -25,7 +25,6 @@ export default {
     };
 
     let destination = "";
-    let title = "Loading...";
 
     if (hostname === CONFIG.oldDomain) {
       destination = `https://${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
@@ -34,11 +33,9 @@ export default {
       
       if (CONFIG.exceptions[sub]) {
         destination = CONFIG.exceptions[sub];
-        title = `Loading to ${sub.toUpperCase()}...`;
       } else {
         const mappedSub = CONFIG.subdomainMapping[sub] || sub;
         destination = `https://${mappedSub}.${CONFIG.newDomain}${url.pathname}${url.search}${url.hash}`;
-        title = `Loading to ${mappedSub}...`;
       }
     }
 
@@ -47,13 +44,13 @@ export default {
     } catch (e) {
     }
 
-    return new Response(generateHTML(destination, title, CONFIG.faviconUrl), {
+    return new Response(generateHTML(destination, CONFIG.faviconUrl), {
       headers: { "content-type": "text/html;charset=UTF-8" },
     });
   }
 };
 
-function generateHTML(newURL, pageTitle, faviconUrl) {
+function generateHTML(newURL, faviconUrl) {
   const finalFavicon = faviconUrl || "https://super-hiko14.com/favicon.ico";
 
   return `
@@ -62,9 +59,7 @@ function generateHTML(newURL, pageTitle, faviconUrl) {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${pageTitle}</title>
     <link rel="icon" href="${finalFavicon}">
-    <meta property="og:title" content="${pageTitle}">
     <noscript><meta http-equiv="refresh" content="1;url=${newURL}"></noscript>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap');
