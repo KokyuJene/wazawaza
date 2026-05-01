@@ -59,7 +59,7 @@ export default {
         const pathKey = url.pathname.replace(/^\/|\/$/g, '');
         
         if (CONFIG.goMappings[pathKey]) {
-          destination = `https://${CONFIG.goMappings[pathKey]}${url.search}${url.hash}`;
+          destination = `${CONFIG.goMappings[pathKey]}${url.search}${url.hash}`;
         } else {
           // マッチしない場合はメインドメインへ
           destination = `https://${CONFIG.newDomain}`;
